@@ -1,0 +1,14 @@
+{
+  "name": "snackbot",
+  "description": "snackbot",
+  "author": "David Chen <chenosaurus@gmail.com>",
+  "version": "1.0.0",
+  "dependencies": {
+    "serialport": "1.0.8",
+    "socket.io": "0.9.11",
+    "express": "3.0.4"
+  },
+  "devDependencies": {
+  },
+  "engine": "node >= 0.6"
+}

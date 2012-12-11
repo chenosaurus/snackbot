@@ -1,8 +1,5 @@
 var express     = require("express"),
     app         = express(),
-    http        = require('http'),
-    server      = http.createServer(app),
-    io          = require('socket.io').listen(server),
     SerialPort  = require("serialport").SerialPort,
     bot         = new SerialPort("/dev/ttyACM0", {
       baudrate: 9600
@@ -30,24 +27,21 @@ function stop() {
 
 app.use(express.static(__dirname + '/public'));
 
-io.sockets.on('connection', function(socket) {
-  socket.on('f', function(data) {
-    forward();
-  });
-  socket.on('b', function(data) {
-    backward();
-  });
-  socket.on('l', function(data) {
-    left();
-  });
-  socket.on('r', function(data) {
-    right();
-  });
-  socket.on('s', function(data) {
-    stop();
-  });
+app.get('/command/f', function(req, res){
+  res.send('ok');
+  forward();
 });
 
-server.listen(80);
+app.get('/command/b', function(req, res){
+  res.send('ok');
+  backward();
+});
+
+app.get('/command/s', function(req, res){
+  res.send('ok');
+  stop();
+});
+
+app.listen(80);
 
 

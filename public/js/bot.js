@@ -82,24 +82,37 @@ Bot.prototype.init = function() {
 
   setInterval(function() {
     that.sendCommand();
-  }, 300);
+  }, 250);
+
+  this.socket = io.connect('/');
 }
 
+// Bot.prototype.stop = function() {
+//   $.ajax({
+//       url: "/command/s",
+//       data: {}
+//     });
+// }
+
+// Bot.prototype.sendCommand = function() {
+//   if (this.currentState) {
+//     $.ajax({
+//       url: "/command/" + this.currentState,
+//       data: {}
+//     });
+//   }
+// }
+
 Bot.prototype.stop = function() {
-  $.ajax({
-      url: "/command/s",
-      data: {}
-    });
+  this.socket.emit('command', {code: 's'});
 }
 
 Bot.prototype.sendCommand = function() {
   if (this.currentState) {
-    $.ajax({
-      url: "/command/" + this.currentState,
-      data: {}
-    });
+    this.socket.emit('command', {code: this.currentState});
   }
 }
+
 
 Bot.prototype.initVideo = function() {
   var url = "http://" + window.location.hostname + ":8000/?action=stream";

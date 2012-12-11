@@ -1,9 +1,11 @@
 var express     = require("express"),
     app         = express(),
-    SerialPort  = require("serialport").SerialPort,
-    bot         = new SerialPort("/dev/ttyACM0", {
-      baudrate: 9600
-    });
+    serialport  = require("serialport"),
+    SerialPort = serialport.SerialPort; 
+
+var bot = new SerialPort("/dev/ttyACM0", {
+  baudrate: 9600
+});
 
 function forward() {
   bot.write('f');

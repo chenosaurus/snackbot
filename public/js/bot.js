@@ -78,6 +78,8 @@ Bot.prototype.init = function() {
     }
   });
 
+  this.initVideo();
+
   setInterval(function() {
     that.sendCommand();
   }, 300);
@@ -97,4 +99,10 @@ Bot.prototype.sendCommand = function() {
       data: {}
     });
   }
+}
+
+Bot.prototype.initVideo = function() {
+  var url = "http://" + window.location.hostname + ":8000/?action=stream";
+
+  $("<img>").attr("src", url).appendTo(".video");
 }

@@ -3,9 +3,9 @@ var express     = require("express"),
     serialport  = require("serialport"),
     SerialPort = serialport.SerialPort; 
 
-// var bot = new SerialPort("/dev/ttyAMA0", {
-//    baudrate: 9600 
-// });
+var bot = new SerialPort("/dev/ttyAMA0", {
+  baudrate: 9600 
+});
 
 // //var bot = new SerialPort("/dev/tty.usbmodemfa131", {
 //  // baudrate: 9600

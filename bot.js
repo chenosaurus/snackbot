@@ -11,9 +11,9 @@ var bot = new SerialPort("/dev/ttyAMA0", {
 //  // baudrate: 9600
 // //});
 
-// bot.on("data", function (data) {
-//   console.log(data.toString());
-// });
+bot.on("data", function (data) {
+  console.log(data.toString());
+});
 
 
 function forward() {

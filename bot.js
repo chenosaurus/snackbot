@@ -30,12 +30,21 @@ function stop() {
 
 app.use(express.static(__dirname + '/public'));
 
-io.sockets.on('connection', function (socket) {
-  socket.on('drive', function (data) {
-    console.log(data);
-    if (data.command == "l") {
-      left();
-    }
+io.sockets.on('connection', function(socket) {
+  socket.on('f', function(data) {
+    forward();
+  });
+  socket.on('b', function(data) {
+    backward();
+  });
+  socket.on('l', function(data) {
+    left();
+  });
+  socket.on('r', function(data) {
+    right();
+  });
+  socket.on('s', function(data) {
+    stop();
   });
 });
 

@@ -1,10 +1,13 @@
 var express     = require("express"),
+    http        = require("http"),
     app         = express(),
+    server      = http.createServer(app),
+    io          = require('socket.io').listen(server),
     serialport  = require("serialport"),
-    SerialPort = serialport.SerialPort; 
+    SerialPort  = serialport.SerialPort;
 
 var bot = new SerialPort("/dev/ttyAMA0", {
-  baudrate: 9600 
+  baudrate: 9600
 });
 
 // //var bot = new SerialPort("/dev/tty.usbmodemfa131", {
@@ -15,6 +18,8 @@ var bot = new SerialPort("/dev/ttyAMA0", {
 //   console.log(data.toString());
 // });
 
+//dummy
+//var bot = {write: function() {}};
 
 function forward() {
   bot.write('f');
@@ -63,6 +68,30 @@ app.get('/command/s', function(req, res){
   stop();
 });
 
-app.listen(80);
+io.sockets.on('connection', function (socket) {
+  socket.on('command', function (data) {
+    switch (data.code) {
+      case "f":
+        forward();
+        break;
+      case "b":
+        backward();
+        break;
+      case "l":
+        left();
+        break;
+      case "r":
+        right();
+        break;
+      case "s":
+        stop();
+        break;
+
+    }
+      console.log(data.code);
+  });
+});
+
+server.listen(8000);
 
 

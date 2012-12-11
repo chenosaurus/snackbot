@@ -52,6 +52,9 @@ Bot.prototype.init = function() {
       case 68:
         that.right(true);
         break;
+      case 32:
+        that.stop();
+        break;
     }
   });
 
@@ -69,12 +72,22 @@ Bot.prototype.init = function() {
       case 68:
         that.right(false);
         break;
+      case 32:
+        that.stop();
+        break;
     }
   });
 
   setInterval(function() {
     that.sendCommand();
   }, 300);
+}
+
+Bot.prototype.stop = function() {
+  $.ajax({
+      url: "/command/s",
+      data: {}
+    });
 }
 
 Bot.prototype.sendCommand = function() {

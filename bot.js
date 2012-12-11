@@ -3,17 +3,17 @@ var express     = require("express"),
     serialport  = require("serialport"),
     SerialPort = serialport.SerialPort; 
 
-var bot = new SerialPort("/dev/ttyAMA0", {
-   baudrate: 9600 
-});
+// var bot = new SerialPort("/dev/ttyAMA0", {
+//    baudrate: 9600 
+// });
 
-//var bot = new SerialPort("/dev/tty.usbmodemfa131", {
- // baudrate: 9600
-//});
+// //var bot = new SerialPort("/dev/tty.usbmodemfa131", {
+//  // baudrate: 9600
+// //});
 
-bot.on("data", function (data) {
-  console.log(data.toString());
-});
+// bot.on("data", function (data) {
+//   console.log(data.toString());
+// });
 
 
 function forward() {

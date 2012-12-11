@@ -10,15 +10,18 @@
   </head>
   <body>
     
-    hi
+    <div class="title">SnackBot</div>
+    <div class="video">
+      <img src="http://pi:8000/?action=stream"/>
+    </div>
 
-    <script src="/socket.io/socket.io.js"></script>
+    <script type="text/javascript" src="/js/jquery.js"></script>
+    <script type="text/javascript" src="/js/bot.js"></script>
+    
     <script>
-      var socket = io.connect('/');
-      // socket.on('news', function (data) {
-      //   console.log(data);
-      //   socket.emit('my other event', { my: 'data' });
-      // });
+      $(function() {
+        window.bot = new Bot();
+      });
     </script>
   </body>
 </html>

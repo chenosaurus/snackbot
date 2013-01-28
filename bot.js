@@ -6,7 +6,10 @@ var express     = require("express"),
     serialport  = require("serialport"),
     SerialPort  = serialport.SerialPort;
 
-var bot = new SerialPort("/dev/ttyAMA0", {
+var port = "/dev/tty.usbserial-FTDPYLFY";
+//var port = ""/dev/ttyAMA0";
+
+var bot = new SerialPort(port, {
   baudrate: 9600
 });
 
@@ -14,32 +17,38 @@ var bot = new SerialPort("/dev/ttyAMA0", {
 //  // baudrate: 9600
 // //});
 
-// bot.on("data", function (data) {
-//   console.log(data.toString());
-// });
+bot.on("data", function (data) {
+  console.log("data:" + data.toString());
+});
 
 //dummy
 //var bot = {write: function() {}};
 
-function forward() {
-  bot.write('f');
-}
+function setLeftSpeed(speed) {
+  bot.write('l' + speed);
+};
 
-function backward() {
-  bot.write('b');
-}
+function setRightSpeed(speed) {
+  bot.write('r' + speed);
+};
 
-function left() {
-  bot.write('l');
-}
+function setLeftDirection(isForward) {
+  bot.write('d' + isForward ? '1' : '0');
+};
 
-function right() {
-  bot.write('r');
-}
+function setRightDirection(isForward) {
+  bot.write('f' + isForward ? '1' : '0');
+};
 
 function stop() {
-  bot.write('s');
-}
+  setLeftSpeed(0);
+  setRightSpeed(0);
+};
+
+function moveCamera(isLeft) {
+  bot.write('s' + isLeft ? '0': '1');
+};
+
 
 app.use(express.static(__dirname + '/public'));
 

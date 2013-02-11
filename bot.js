@@ -89,8 +89,9 @@ function sendCommand() {
 };
 
 function moveCamera(isLeft) {
-  console.log('servo cmd', 's' + isLeft ? '0': '1');
-  bot.write('s' + isLeft ? '0': '1');
+  var dir = isLeft ? "0" : "1";
+  console.log('servo,', "s" + dir);
+  bot.write("s" + dir);
 };
 
 app.use(express.static(__dirname + '/public'));

@@ -89,6 +89,7 @@ function sendCommand() {
 };
 
 function moveCamera(isLeft) {
+  console.log('servo cmd', 's' + isLeft ? '0': '1');
   bot.write('s' + isLeft ? '0': '1');
 };
 

@@ -64,7 +64,7 @@ Bot.prototype.init = function() {
 }
 
 Bot.prototype.onStatus = function(data) {
-  console.log(data);
+  console.log('status', data);
 }
 
 

@@ -31,54 +31,54 @@ var botStatus = {
 
 
 function forward() {
-  if (bot.lSpeed < 9) {
-    bot.lSpeed++;
+  if (botStatus.lSpeed < 9) {
+    botStatus.lSpeed++;
   }
-  if (bot.rSpeed < 9) {
-    bot.rSpeed++;
+  if (botStatus.rSpeed < 9) {
+    botStatus.rSpeed++;
   }
   sendCommand();
 };
 
 function backward() {
-  if (bot.lSpeed > -9) {
-    bot.lSpeed--;
+  if (botStatus.lSpeed > -9) {
+    botStatus.lSpeed--;
   }
-  if (bot.rSpeed > -9) {
-    bot.rSpeed--;
+  if (botStatus.rSpeed > -9) {
+    botStatus.rSpeed--;
   }
   sendCommand();
 };
 
 function left() {
-  if (bot.lSpeed > -9) {
-    bot.lSpeed--;
+  if (botStatus.lSpeed > -9) {
+    botStatus.lSpeed--;
   }
-  if (bot.rSpeed < 9) {
-    bot.rSpeed++;
+  if (botStatus.rSpeed < 9) {
+    botStatus.rSpeed++;
   }
   sendCommand();
 };
 
 function right() {
-  if (bot.lSpeed < 9) {
-    bot.lSpeed++;
+  if (botStatus.lSpeed < 9) {
+    botStatus.lSpeed++;
   }
-  if (bot.rSpeed > -9) {
-    bot.rSpeed--;
+  if (botStatus.rSpeed > -9) {
+    botStatus.rSpeed--;
   }
   sendCommand();
 };
 
 function stop(socket) {
-  bot.lSpeed = 0;
-  bot.rSpeed = 0;
+  botStatus.lSpeed = 0;
+  botStatus.rSpeed = 0;
   sendCommand();
 };
 
 function sendCommand() {
-  var lDir = bot.lSpeed > 0 ? 1 : 0;
-  var rDir = bot.rSpeed > 0 ? 1 : 0;
+  var lDir = botStatus.lSpeed > 0 ? 1 : 0;
+  var rDir = botStatus.rSpeed > 0 ? 1 : 0;
   bot.write("d" + lDir + 
     "f" + rDir + 
     "l" + Math.abs(botStatus.lSpeed) + 

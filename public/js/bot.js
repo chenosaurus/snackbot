@@ -2,115 +2,69 @@ var Bot = function() {
   this.init();
 };
 
-Bot.prototype.forward = function(on) {
-  if (on) {
-    this.currentState = "f";
-  } else {
-    this.currentState = false;
-  }
+Bot.prototype.forward = function() {
+  this.socket.emit('command', {code: "f"});
 }
 
-Bot.prototype.backward = function(on) {
-  if (on) {
-    this.currentState = "b";
-  } else {
-    this.currentState = false;
-  }
+Bot.prototype.backward = function() {
+  this.socket.emit('command', {code: "b"});
 }
 
 Bot.prototype.left = function(on) {
-  if (on) {
-    this.currentState = "l";
-  } else {
-    this.currentState = false;
-  }
+   this.socket.emit('command', {code: "l"});
 }
 
 Bot.prototype.right = function(on) {
-  if (on) {
-    this.currentState = "r";
-  } else {
-    this.currentState = false;
-  }
+   this.socket.emit('command', {code: "r"});
 }
-
-Bot.prototype.init = function() {
-  var that = this;
-  this.currentState = false;
-
-  $(window).on("keydown", function(e) {
-    switch(e.keyCode) {
-      case 87:
-        that.forward(true);
-        break;
-      case 83:
-        that.backward(true);
-        break;
-      case 65:
-        that.left(true);
-        break;
-      case 68:
-        that.right(true);
-        break;
-      case 32:
-        that.stop();
-        break;
-    }
-  });
-
-  $(window).on("keyup", function(e) {
-    switch(e.keyCode) {
-      case 87:
-        that.forward(false);
-        break;
-      case 83:
-        that.backward(false);
-        break;
-      case 65:
-        that.left(false);
-        break;
-      case 68:
-        that.right(false);
-        break;
-      case 32:
-        that.stop();
-        break;
-    }
-  });
-
-  this.initVideo();
-
-  setInterval(function() {
-    that.sendCommand();
-  }, 250);
-
-  this.socket = io.connect('/');
-}
-
-// Bot.prototype.stop = function() {
-//   $.ajax({
-//       url: "/command/s",
-//       data: {}
-//     });
-// }
-
-// Bot.prototype.sendCommand = function() {
-//   if (this.currentState) {
-//     $.ajax({
-//       url: "/command/" + this.currentState,
-//       data: {}
-//     });
-//   }
-// }
 
 Bot.prototype.stop = function() {
   this.socket.emit('command', {code: 's'});
 }
 
-Bot.prototype.sendCommand = function() {
-  if (this.currentState) {
-    this.socket.emit('command', {code: this.currentState});
-  }
+Bot.prototype.camLeft = function() {
+  this.socket.emit('command', {code: 'z'});
+}
+
+Bot.prototype.camRight = function() {
+  this.socket.emit('command', {code: 'x'});
+}
+
+Bot.prototype.init = function() {
+  $(window).on("keyup", function(e) {
+    switch(e.keyCode) {
+      case 87:
+        this.forward();
+        break;
+      case 83:
+        this.backward();
+        break;
+      case 65:
+        this.left();
+        break;
+      case 68:
+        this.right();
+        break;
+      case 32:
+        this.stop();
+        break;
+      case 37:
+        this.camLeft();
+        break;
+      case 39:
+        this.camRight();
+        break;
+    }
+  }.bind(this));
+
+  this.initVideo();
+
+  this.socket = io.connect('/');
+  this.socket.on('status', this.onStatus.bind(this));
+}
+
+Bot.prototype.onStatus = function(data) {
+  console.log(data);
 }
 
 

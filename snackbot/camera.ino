@@ -17,5 +17,5 @@ void camLeft() {
 }
 
 void camUpdate() {
-  cam.write(camPos);  
+  pwm.setPWM(servonum, 0, map(camPos, 0, 180, SERVOMIN, SERVOMAX));
 }

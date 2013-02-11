@@ -1,5 +1,5 @@
 #include <Wire.h>
-#include <Servo.h> 
+#include <Adafruit_PWMServoDriver.h>
  
 #define MotorSpeedSet        0x82
 #define PWMFrequenceSet      0x84
@@ -7,10 +7,14 @@
 #define MotorA               0xa1
 #define MotorB               0xa5
 #define Nothing              0x01
- 
+
 #define I2CMotorDriverAdd    0x0a  
 
-Servo cam;
+Adafruit_PWMServoDriver pwm = Adafruit_PWMServoDriver();
+#define SERVOMIN  200 // this is the 'minimum' pulse length count (out of 4096)
+#define SERVOMAX  650 // this is the 'maximum' pulse length count (out of 4096)
+
+uint8_t servonum = 15;
 
 int camPos = 90;
 int leftSpeed = 0;
@@ -22,10 +26,14 @@ int commandState = 0; //1 = motor 2 = servo
  
  
 void setup() {
-  cam.attach(6); 
+  //cam.attach(5); 
   Wire.begin(); // join i2c bus (address optional for master)
   delayMicroseconds(10000); //wait for motor driver to initialization
   Serial.begin(9600);
+  
+  pwm.begin();
+  
+  pwm.setPWMFreq(60);  // Analog servos run at ~60 Hz updates
 }
 
 void checkCommandState(char code) {
@@ -154,8 +162,8 @@ void loop() {
   }
   
   //set cam position
-  cam.write(camPos);
-  
+ // cam.write(camPos);
+  camUpdate();
 //  if (isForward) {
 //    forward(leftSpeed, rightSpeed);
 //  } else {

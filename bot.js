@@ -21,76 +21,100 @@ bot.on("data", function (data) {
   console.log("data:" + data.toString());
 });
 
+var botStatus = {
+  lSpeed: 0,
+  rSpeed: 0
+};
 //dummy
 //var bot = {write: function() {}};
 
-function setLeftSpeed(speed) {
-  bot.write('l' + speed);
-};
 
-function setRightSpeed(speed) {
-  bot.write('r' + speed);
-};
-
-function setLeftDirection(isForward) {
-  bot.write('d' + isForward ? '1' : '0');
-};
-
-function setRightDirection(isForward) {
-  bot.write('f' + isForward ? '1' : '0');
-};
 
 function forward() {
-  bot.write("d1f1l5r5");
+  if (bot.lSpeed < 9) {
+    bot.lSpeed++;
+  }
+  if (bot.rSpeed < 9) {
+    bot.rSpeed++;
+  }
+  sendCommand();
 };
 
 function backward() {
-  bot.write("d0frl5r5");
+  if (bot.lSpeed > -9) {
+    bot.lSpeed--;
+  }
+  if (bot.rSpeed > -9) {
+    bot.rSpeed--;
+  }
+  sendCommand();
 };
 
 function left() {
-  bot.write("d0f1l5r5");
+  if (bot.lSpeed > -9) {
+    bot.lSpeed--;
+  }
+  if (bot.rSpeed < 9) {
+    bot.rSpeed++;
+  }
+  sendCommand();
 };
 
 function right() {
-  bot.write("d1f0l5r5");
+  if (bot.lSpeed < 9) {
+    bot.lSpeed++;
+  }
+  if (bot.rSpeed > -9) {
+    bot.rSpeed--;
+  }
+  sendCommand();
 };
 
-function stop() {
-  bot.write("l0r0")
+function stop(socket) {
+  bot.lSpeed = 0;
+  bot.rSpeed = 0;
+  sendCommand();
+};
+
+function sendCommand() {
+  var lDir = bot.lSpeed > 0 ? 1 : 0;
+  var rDir = bot.rSpeed > 0 ? 1 : 0;
+  bot.write("d" + lDir + 
+    "f" + rDir + 
+    "l" + Math.abs(botStatus.lSpeed) + 
+    "r" + Math.abs(botStatus.rSpeed));
 };
 
 function moveCamera(isLeft) {
   bot.write('s' + isLeft ? '0': '1');
 };
 
-
 app.use(express.static(__dirname + '/public'));
 
-app.get('/command/f', function(req, res){
-  res.send('ok');
-  forward();
-});
+// app.get('/command/f', function(req, res){
+//   res.send('ok');
+//   forward();
+// });
 
-app.get('/command/b', function(req, res){
-  res.send('ok');
-  backward();
-});
+// app.get('/command/b', function(req, res){
+//   res.send('ok');
+//   backward();
+// });
 
-app.get('/command/l', function(req, res){
-  res.send('ok');
-  left();
-});
+// app.get('/command/l', function(req, res){
+//   res.send('ok');
+//   left();
+// });
 
-app.get('/command/r', function(req, res){
-  res.send('ok');
-  right();
-});
+// app.get('/command/r', function(req, res){
+//   res.send('ok');
+//   right();
+// });
 
-app.get('/command/s', function(req, res){
-  res.send('ok');
-  stop();
-});
+// app.get('/command/s', function(req, res){
+//   res.send('ok');
+//   stop();
+// });
 
 io.sockets.on('connection', function (socket) {
   socket.on('command', function (data) {
@@ -110,8 +134,15 @@ io.sockets.on('connection', function (socket) {
       case "s":
         stop();
         break;
-
+      case "z":
+        moveCamera(true);
+        break;
+      case "x":
+        moveCamera(false);
+        break;
     }
+
+    socket.emit("status", botStatus);
       console.log(data.code);
   });
 });

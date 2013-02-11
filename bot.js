@@ -44,7 +44,7 @@ function forward() {
   bot.write("d1f1l5r5");
 };
 
-function backwards() {
+function backward() {
   bot.write("d0frl5r5");
 };
 

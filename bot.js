@@ -51,9 +51,10 @@ function backward() {
 };
 
 function left() {
-  if (botStatus.lSpeed > -9) {
-    botStatus.lSpeed--;
-  }
+  // if (botStatus.lSpeed > -9) {
+  //   botStatus.lSpeed--;
+  // }
+  botStatus.lSpeed = 0;
   if (botStatus.rSpeed < 9) {
     botStatus.rSpeed++;
   }
@@ -64,9 +65,10 @@ function right() {
   if (botStatus.lSpeed < 9) {
     botStatus.lSpeed++;
   }
-  if (botStatus.rSpeed > -9) {
-    botStatus.rSpeed--;
-  }
+  botStatus.rSpeed = 0;
+  // if (botStatus.rSpeed > -9) {
+  //   botStatus.rSpeed--;
+  // }
   sendCommand();
 };
 
@@ -79,9 +81,9 @@ function stop(socket) {
 function sendCommand() {
   var lDir = botStatus.lSpeed > 0 ? 1 : 0;
   var rDir = botStatus.rSpeed > 0 ? 1 : 0;
-  var cmd = "d" + lDir + 
-    "f" + rDir + 
-    "l" + Math.abs(botStatus.lSpeed) + 
+  var cmd = "d" + lDir +
+    "f" + rDir +
+    "l" + Math.abs(botStatus.lSpeed) +
     "r" + Math.abs(botStatus.rSpeed);
 
   console.log('sending cmd', cmd);

@@ -6,8 +6,8 @@ var express     = require("express"),
     serialport  = require("serialport"),
     SerialPort  = serialport.SerialPort;
 
-var port = "/dev/tty.usbserial-FTDPYLFY";
-//var port = ""/dev/ttyAMA0";
+//var port = "/dev/tty.usbserial-FTDPYLFY";
+var port = "/dev/ttyAMA0";
 
 var bot = new SerialPort(port, {
   baudrate: 9600
@@ -21,64 +21,109 @@ bot.on("data", function (data) {
   console.log("data:" + data.toString());
 });
 
+var botStatus = {
+  lSpeed: 0,
+  rSpeed: 0
+};
 //dummy
 //var bot = {write: function() {}};
 
-function setLeftSpeed(speed) {
-  bot.write('l' + speed);
+
+
+function forward() {
+  if (botStatus.lSpeed < 9) {
+    botStatus.lSpeed++;
+  }
+  if (botStatus.rSpeed < 9) {
+    botStatus.rSpeed++;
+  }
+  sendCommand();
 };
 
-function setRightSpeed(speed) {
-  bot.write('r' + speed);
+function backward() {
+  if (botStatus.lSpeed > -9) {
+    botStatus.lSpeed--;
+  }
+  if (botStatus.rSpeed > -9) {
+    botStatus.rSpeed--;
+  }
+  sendCommand();
 };
 
-function setLeftDirection(isForward) {
-  bot.write('d' + isForward ? '1' : '0');
+function left() {
+  if (botStatus.lSpeed > -9) {
+    botStatus.lSpeed--;
+  }
+  if (botStatus.rSpeed < 9) {
+    botStatus.rSpeed++;
+  }
+  sendCommand();
 };
 
-function setRightDirection(isForward) {
-  bot.write('f' + isForward ? '1' : '0');
+function right() {
+  if (botStatus.lSpeed < 9) {
+    botStatus.lSpeed++;
+  }
+  if (botStatus.rSpeed > -9) {
+    botStatus.rSpeed--;
+  }
+  sendCommand();
 };
 
-function stop() {
-  setLeftSpeed(0);
-  setRightSpeed(0);
+function stop(socket) {
+  botStatus.lSpeed = 0;
+  botStatus.rSpeed = 0;
+  sendCommand();
+};
+
+function sendCommand() {
+  var lDir = botStatus.lSpeed > 0 ? 1 : 0;
+  var rDir = botStatus.rSpeed > 0 ? 1 : 0;
+  var cmd = "d" + lDir + 
+    "f" + rDir + 
+    "l" + Math.abs(botStatus.lSpeed) + 
+    "r" + Math.abs(botStatus.rSpeed);
+
+  console.log('sending cmd', cmd);
+  bot.write(cmd);
 };
 
 function moveCamera(isLeft) {
-  bot.write('s' + isLeft ? '0': '1');
+  var dir = isLeft ? "0" : "1";
+  console.log('servo,', "s" + dir);
+  bot.write("s" + dir);
 };
-
 
 app.use(express.static(__dirname + '/public'));
 
-app.get('/command/f', function(req, res){
-  res.send('ok');
-  forward();
-});
+// app.get('/command/f', function(req, res){
+//   res.send('ok');
+//   forward();
+// });
 
-app.get('/command/b', function(req, res){
-  res.send('ok');
-  backward();
-});
+// app.get('/command/b', function(req, res){
+//   res.send('ok');
+//   backward();
+// });
 
-app.get('/command/l', function(req, res){
-  res.send('ok');
-  left();
-});
+// app.get('/command/l', function(req, res){
+//   res.send('ok');
+//   left();
+// });
 
-app.get('/command/r', function(req, res){
-  res.send('ok');
-  right();
-});
+// app.get('/command/r', function(req, res){
+//   res.send('ok');
+//   right();
+// });
 
-app.get('/command/s', function(req, res){
-  res.send('ok');
-  stop();
-});
+// app.get('/command/s', function(req, res){
+//   res.send('ok');
+//   stop();
+// });
 
 io.sockets.on('connection', function (socket) {
   socket.on('command', function (data) {
+    console.log('data', data);
     switch (data.code) {
       case "f":
         forward();
@@ -95,12 +140,19 @@ io.sockets.on('connection', function (socket) {
       case "s":
         stop();
         break;
-
+      case "z":
+        moveCamera(true);
+        break;
+      case "x":
+        moveCamera(false);
+        break;
     }
+
+    socket.emit("status", botStatus);
       console.log(data.code);
   });
 });
 
-server.listen(8000);
+server.listen(8001);
 
 

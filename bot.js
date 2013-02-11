@@ -6,8 +6,8 @@ var express     = require("express"),
     serialport  = require("serialport"),
     SerialPort  = serialport.SerialPort;
 
-var port = "/dev/tty.usbserial-FTDPYLFY";
-//var port = ""/dev/ttyAMA0";
+//var port = "/dev/tty.usbserial-FTDPYLFY";
+var port = "/dev/ttyAMA0";
 
 var bot = new SerialPort(port, {
   baudrate: 9600
@@ -40,9 +40,24 @@ function setRightDirection(isForward) {
   bot.write('f' + isForward ? '1' : '0');
 };
 
+function forward() {
+  bot.write("d1f1l5r5");
+};
+
+function backwards() {
+  bot.write("d0frl5r5");
+};
+
+function left() {
+  bot.write("d0f1l5r5");
+};
+
+function right() {
+  bot.write("d1f0l5r5");
+};
+
 function stop() {
-  setLeftSpeed(0);
-  setRightSpeed(0);
+  bot.write("l0r0")
 };
 
 function moveCamera(isLeft) {

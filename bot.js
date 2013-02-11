@@ -84,6 +84,7 @@ function sendCommand() {
     "l" + Math.abs(botStatus.lSpeed) + 
     "r" + Math.abs(botStatus.rSpeed);
 
+  console.log('sending cmd', cmd);
   bot.write(cmd);
 };
 

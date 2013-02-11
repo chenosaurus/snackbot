@@ -79,10 +79,12 @@ function stop(socket) {
 function sendCommand() {
   var lDir = botStatus.lSpeed > 0 ? 1 : 0;
   var rDir = botStatus.rSpeed > 0 ? 1 : 0;
-  bot.write("d" + lDir + 
+  var cmd = "d" + lDir + 
     "f" + rDir + 
     "l" + Math.abs(botStatus.lSpeed) + 
-    "r" + Math.abs(botStatus.rSpeed));
+    "r" + Math.abs(botStatus.rSpeed);
+
+  bot.write(cmd);
 };
 
 function moveCamera(isLeft) {

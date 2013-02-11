@@ -121,6 +121,7 @@ app.use(express.static(__dirname + '/public'));
 
 io.sockets.on('connection', function (socket) {
   socket.on('command', function (data) {
+    console.log('data', data);
     switch (data.code) {
       case "f":
         forward();

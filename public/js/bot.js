@@ -26,7 +26,7 @@ Bot.prototype.stop = function() {
 Bot.prototype.camLeft = function(on) {
   clearInterval(this.camMoveTimer);
   if (on) {
-    setInterval(function() {
+    this.camMoveTimer = setInterval(function() {
       this.socket.emit('command', {code: 'z'});
     }.bind(this), 500);
   } 

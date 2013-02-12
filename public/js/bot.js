@@ -48,13 +48,15 @@ Bot.prototype.camCenter = function() {
 
 Bot.prototype.init = function() {
   $(window).on("keydown", function(e) {
+    switch(e.keyCode) {
       case 37:
         this.camLeft(true);
         break;
       case 39:
         this.camRight(true);
         break;
-  });
+    }
+  }.bind(this));
 
   $(window).on("keyup", function(e) {
     switch(e.keyCode) {

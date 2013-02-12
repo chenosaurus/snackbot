@@ -51,20 +51,20 @@ function backward() {
 };
 
 function left() {
-  if (botStatus.lSpeed > -9) {
+  if (botStatus.lSpeed > -5) {
     botStatus.lSpeed--;
   }
-  if (botStatus.rSpeed < 9) {
+  if (botStatus.rSpeed < 5) {
     botStatus.rSpeed++;
   }
   sendCommand();
 };
 
 function right() {
-  if (botStatus.lSpeed < 9) {
+  if (botStatus.lSpeed < 5) {
     botStatus.lSpeed++;
   }
-  if (botStatus.rSpeed > -9) {
+  if (botStatus.rSpeed > -5) {
     botStatus.rSpeed--;
   }
   sendCommand();

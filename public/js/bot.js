@@ -35,7 +35,7 @@ Bot.prototype.camLeft = function(on) {
 Bot.prototype.camRight = function(on) {
   clearInterval(this.camMoveTimer);
   if (on) {
-    setInterval(function() {
+    this.camMoveTimer = setInterval(function() {
       this.socket.emit('command', {code: 'x'});
     }.bind(this), 500);
   } 

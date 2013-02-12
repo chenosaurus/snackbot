@@ -54,18 +54,20 @@ function left() {
   // if (botStatus.lSpeed > -9) {
   //   botStatus.lSpeed--;
   // }
-  botStatus.lSpeed = 0;
-  if (botStatus.rSpeed < 9) {
-    botStatus.rSpeed++;
-  }
+  botStatus.lSpeed = -4;
+  botStatus.rSpeed = 4;
+  // if (botStatus.rSpeed < 9) {
+  //   botStatus.rSpeed++;
+  // }
   sendCommand();
 };
 
 function right() {
-  if (botStatus.lSpeed < 9) {
-    botStatus.lSpeed++;
-  }
-  botStatus.rSpeed = 0;
+  // if (botStatus.lSpeed < 9) {
+  //   botStatus.lSpeed++;
+  // }
+  botStatus.lSpeed = 4;
+  botStatus.rSpeed = -4;
   // if (botStatus.rSpeed > -9) {
   //   botStatus.rSpeed--;
   // }

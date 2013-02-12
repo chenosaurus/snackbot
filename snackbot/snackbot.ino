@@ -14,7 +14,7 @@ Adafruit_PWMServoDriver pwm = Adafruit_PWMServoDriver();
 #define SERVOMIN  200 // this is the 'minimum' pulse length count (out of 4096)
 #define SERVOMAX  620 // this is the 'maximum' pulse length count (out of 4096)
 
-uint8_t servonum = 6;
+uint8_t servonum = 7;
 
 int camPos = 90;
 int leftSpeed = 0;
@@ -43,6 +43,10 @@ void checkCommandState(char code) {
   } else if (code == 's') {
     Serial.write("servo mode\n");
     commandState = 2; 
+  } else if (code == 'c') {
+    //center servo
+    Serial.write("center servo\n");
+    commandState = 6;
   } else if (code == 'r') {
     Serial.write("motor right speed mode\n");
     commandState = 3; 
@@ -70,6 +74,9 @@ void checkCommand(char code) {
     setMotorDirection(true, code);
   } else if (commandState == 5) {
     setMotorDirection(false, code);
+  } else if (commandState == 6) {
+    camPos = 90;
+    camUpdate(); 
   }
   
   
@@ -90,8 +97,8 @@ void setMotorDirection(boolean left, char code) {
     rightForward = dir;
   }
   
-  forward(leftSpeed, rightSpeed);
-//  motorSet(leftSpeed, rightSpeed, leftForward, rightForward);
+  //forward(leftSpeed, rightSpeed);
+  motorSet(leftSpeed, rightSpeed, leftForward, rightForward);
 }
 
 void setMotorSpeed(boolean left, char code) {
@@ -138,6 +145,8 @@ void setMotorSpeed(boolean left, char code) {
   motorSet(leftSpeed, rightSpeed, leftForward, rightForward);
   Serial.println(leftSpeed);
   Serial.println(rightSpeed);
+  Serial.println(leftForward);
+  Serial.println(rightForward);
  
 }
 
@@ -163,7 +172,8 @@ void loop() {
   
   //set cam position
  // cam.write(camPos);
- // camUpdate();
+ camUpdate();
+ delay(5);
 //  if (isForward) {
 //    forward(leftSpeed, rightSpeed);
 //  } else {

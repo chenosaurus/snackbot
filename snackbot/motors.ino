@@ -63,9 +63,9 @@ void motorSet(int leftSpeed, int rightSpeed, boolean leftForward, boolean rightF
    } else if (!leftForward && !rightForward) {
      MotorDirectionSet(0b1010);
    } else if (leftForward && !rightForward) {
-     MotorDirectionSet(0b0110);
-   } else if (!leftForward && rightForward) {
      MotorDirectionSet(0b1001);
+   } else if (!leftForward && rightForward) {
+     MotorDirectionSet(0b0110);
    }
   
 }

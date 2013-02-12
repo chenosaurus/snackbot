@@ -1,5 +1,5 @@
 void camRight() {
- camPos += 5;
+ camPos += 2;
  if (camPos > 180) {
    camPos = 180;
  } 
@@ -8,7 +8,7 @@ void camRight() {
 }
 
 void camLeft() {
- camPos -= 5;
+ camPos -= 2;
  if (camPos < 0) {
    camPos = 0;
  }

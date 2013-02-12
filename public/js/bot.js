@@ -1,5 +1,6 @@
 var Bot = function() {
   this.init();
+  this.camMoveTimer = false;
 };
 
 Bot.prototype.forward = function() {
@@ -10,11 +11,11 @@ Bot.prototype.backward = function() {
   this.socket.emit('command', {code: "b"});
 }
 
-Bot.prototype.left = function(on) {
+Bot.prototype.left = function() {
    this.socket.emit('command', {code: "l"});
 }
 
-Bot.prototype.right = function(on) {
+Bot.prototype.right = function() {
    this.socket.emit('command', {code: "r"});
 }
 
@@ -22,15 +23,39 @@ Bot.prototype.stop = function() {
   this.socket.emit('command', {code: 's'});
 }
 
-Bot.prototype.camLeft = function() {
-  this.socket.emit('command', {code: 'z'});
+Bot.prototype.camLeft = function(on) {
+  clearInterval(this.camMoveTimer);
+  if (on) {
+    setInterval(function() {
+      this.socket.emit('command', {code: 'z'});
+    }.bind(this), 500);
+  } 
 }
 
-Bot.prototype.camRight = function() {
-  this.socket.emit('command', {code: 'x'});
+Bot.prototype.camRight = function(on) {
+  clearInterval(this.camMoveTimer);
+  if (on) {
+    setInterval(function() {
+      this.socket.emit('command', {code: 'x'});
+    }.bind(this), 500);
+  } 
 }
+
+Bot.prototype.camCenter = function() {
+  this.socket.emit('command', {code: 'c'});
+}
+
 
 Bot.prototype.init = function() {
+  $(window).on("keydown", function(e) {
+      case 37:
+        this.camLeft(true);
+        break;
+      case 39:
+        this.camRight(true);
+        break;
+  });
+
   $(window).on("keyup", function(e) {
     switch(e.keyCode) {
       case 87:
@@ -49,10 +74,13 @@ Bot.prototype.init = function() {
         this.stop();
         break;
       case 37:
-        this.camLeft();
+        this.camLeft(false);
         break;
       case 39:
-        this.camRight();
+        this.camRight(false);
+        break;
+      case 40:
+        this.camCenter();
         break;
     }
   }.bind(this));

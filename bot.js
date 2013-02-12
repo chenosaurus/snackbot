@@ -94,6 +94,10 @@ function moveCamera(isLeft) {
   bot.write("s" + dir);
 };
 
+function centerCamera() {
+  bot.write("c0");
+};
+
 app.use(express.static(__dirname + '/public'));
 
 // app.get('/command/f', function(req, res){
@@ -145,6 +149,9 @@ io.sockets.on('connection', function (socket) {
         break;
       case "x":
         moveCamera(false);
+        break;
+      case "c":
+        centerCamera();
         break;
     }
 

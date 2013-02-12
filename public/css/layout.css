@@ -6,20 +6,16 @@ body {
   font-size: 12px;
 }
 
-.title {
-  position: relative;
-  margin: 20px auto 0 auto;
-  font-weight: 600;
-  text-align: center;
-  font-size: 48px;
-  color: #777;
+.video {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
 }
 
-.video {
-  position: relative;
-  margin: 20px auto 0 auto;
-  height: 480px;
-  width: 640px;
-  border: 2px solid rgba(0, 0, 0, .3);
-  border-radius: 2px;
+.video img {
+  position: absolute;
+  height: 100%;
+  width: 100%;
 }

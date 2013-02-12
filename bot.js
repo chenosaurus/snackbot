@@ -136,10 +136,10 @@ io.sockets.on('connection', function (socket) {
         backward();
         break;
       case "l":
-        left();
+        right();
         break;
       case "r":
-        right();
+        left();
         break;
       case "s":
         stop();

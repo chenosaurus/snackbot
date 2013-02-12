@@ -12,9 +12,9 @@
 
 Adafruit_PWMServoDriver pwm = Adafruit_PWMServoDriver();
 #define SERVOMIN  200 // this is the 'minimum' pulse length count (out of 4096)
-#define SERVOMAX  650 // this is the 'maximum' pulse length count (out of 4096)
+#define SERVOMAX  620 // this is the 'maximum' pulse length count (out of 4096)
 
-uint8_t servonum = 15;
+uint8_t servonum = 6;
 
 int camPos = 90;
 int leftSpeed = 0;
@@ -163,7 +163,7 @@ void loop() {
   
   //set cam position
  // cam.write(camPos);
-  camUpdate();
+ // camUpdate();
 //  if (isForward) {
 //    forward(leftSpeed, rightSpeed);
 //  } else {

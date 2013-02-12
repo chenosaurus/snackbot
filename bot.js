@@ -73,16 +73,18 @@ function right() {
 function stop(socket) {
   botStatus.lSpeed = 0;
   botStatus.rSpeed = 0;
-  sendCommand();
+  sendCommand(true);
 };
 
-function sendCommand() {
+function sendCommand(stop) {
+  var lSpeed = stop ? 0 : Math.max(2, Math.abs(botStatus.lSpeed));
+  var rSpeed = stop ? 0 : Math.max(2, Math.abs(botStatus.rSpeed));
   var lDir = botStatus.lSpeed > 0 ? 1 : 0;
   var rDir = botStatus.rSpeed > 0 ? 1 : 0;
   var cmd = "d" + lDir +
     "f" + rDir +
-    "l" + Math.max(2, Math.abs(botStatus.lSpeed)) +
-    "r" + Math.max(2, Math.abs(botStatus.rSpeed));
+    "l" + lSpeed +
+    "r" + rSpeed;
 
   console.log('sending cmd', cmd);
   bot.write(cmd);
